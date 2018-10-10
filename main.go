@@ -24,6 +24,12 @@ func init() {
     }
 }
 
+type Location struct {
+    Country  string `json:"country"`
+    Province string `json:"province"`
+    City     string `json:"city"`
+}
+
 func Handler(w http.ResponseWriter, r *http.Request) {
     query := r.URL.Query()
     ip := query.Get("ip")
@@ -40,10 +46,11 @@ func Handler(w http.ResponseWriter, r *http.Request) {
         return
     }
     w.Header().Set("Content-Type", "application/json;charset=UTF-8")
-    json.NewEncoder(w).Encode(loc)
+    l := &Location{loc.Country, loc.Province, loc.City}
+    json.NewEncoder(w).Encode(l)
 
     go func() {
-        log.Printf("[%s] %s, %s", ip, r.URL, loc.ToJSON())
+        log.Printf("[%s] %s, %#v", ip, r.URL, l)
         }()
 }
 
