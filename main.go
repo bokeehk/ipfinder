@@ -50,7 +50,7 @@ func Handler(w http.ResponseWriter, r *http.Request) {
     json.NewEncoder(w).Encode(l)
 
     go func() {
-        log.Printf("[%s] %s, %#v", ip, r.URL, l)
+        log.Printf("[%s] %s, %#v", r.RemoteAddr, r.URL, l)
         }()
 }
 
